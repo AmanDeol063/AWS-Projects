@@ -1,60 +1,35 @@
-AWS Architecture Project
-Overview
-This project is built on AWS and allows users to connect to an application securely using HTTPS. The project uses a Load Balancer to handle incoming traffic, Tomcat servers to process the requests, and backend servers to support the application with database and messaging services.
+🚀 Static Website Hosting on AWS S3
+This project documents the process of hosting a static website (HTML, CSS, JS files) using an Amazon S3 bucket.
+S3 provides a low-cost and scalable solution for serving static websites directly to users over the internet.
 
-Architecture Details
-User Access:
-Users send HTTPS requests from their browser or application.
+📋 Steps Followed:
+1. Create an S3 Bucket
+Go to AWS Management Console → S3 → Create bucket.
 
-Application Load Balancer (ALB):
-The requests first reach an Application Load Balancer.
+Provide a globally unique bucket name (e.g., your-website-bucket).
 
-It is protected by a Security Group that allows HTTPS traffic (port 443).
+Region: Choose the region closest to your users.
 
-Tomcat EC2 Instances:
-The Load Balancer forwards the request to EC2 instances running Tomcat.
+Uncheck the "Block all public access" option to allow public file access.
 
-These instances are managed by an Auto Scaling Group for high availability and scalability.
+Leave the rest of the settings default and create the bucket.
 
-They are placed inside another Security Group that only allows traffic:
+2. Upload Website Files
+Open the newly created bucket.
 
-From the Load Balancer
+Click Upload and add your static website files (index.html, style.css, script.js, images, etc.).
 
-On port 8080
+After uploading, select the files → Actions → Make public (or modify permissions as needed).
 
-DNS Management (Route 53):
-Backend service IP addresses are managed using Amazon Route 53 Private Hosted Zone, making it easy for servers to find and connect with each other inside the network.
+3. Enable Static Website Hosting
+Go to the Properties tab of the bucket.
 
-Backend EC2 Instances:
-Separate EC2 instances run backend services:
+Scroll to Static website hosting and Enable it.
 
-MySQL (Database)
+Set:
 
-RabbitMQ (Message Broker)
+Index document: index.html
 
-Memcached (Caching System)
-These instances are placed inside their own Security Group, with controlled access based on application needs.
+Error document: error.html (optional)
 
-Security Groups
-Load Balancer Security Group:
-
-Allows HTTPS (443) from the internet.
-
-Tomcat Servers Security Group:
-
-Only allows incoming traffic from the Load Balancer on port 8080.
-
-Backend Servers Security Group:
-
-Allows necessary communication between servers only (e.g., MySQL port 3306, RabbitMQ port 5672, etc.).
-
-Key AWS Services Used
-Amazon EC2 (Virtual Servers)
-
-Elastic Load Balancing (ALB)
-
-Auto Scaling Group
-
-Amazon Route 53 Private Hosted Zone
-
-Security Groups (Firewalls)
+Save changes.
